@@ -323,78 +323,79 @@ logic [4:0] rs1_1_adr, rs2_1_adr, rs1_2_adr, rs2_2_adr, rs1_3_adr, rs2_3_adr, rs
             if(rst) temp_STALL <=0; 
             else temp_STALL <= WE_OFF_ON_LW_STALL;
         end
+
+    // The below code is for testing the processor on IP Tracer
     
-    
-    always_ff@(posedge clk)
-    begin
-        instruction1 <= INSTR_out;
-        instruction2 <= instruction1;
-        instruction3 <= instruction2;
-        instruction4 <= instruction3;
-        instruction5 <= instruction4;
+    // always_ff@(posedge clk)
+    // begin
+    //     instruction1 <= INSTR_out;
+    //     instruction2 <= instruction1;
+    //     instruction3 <= instruction2;
+    //     instruction4 <= instruction3;
+    //     instruction5 <= instruction4;
         
-        rs1_1_adr <= INSTR_out_decode[19:15];
-        rs2_1_adr <= INSTR_out_decode[24:20];
-        rs1_2_adr <= rs1_1_adr;
-        rs2_2_adr <= rs2_1_adr;
-        rs1_3_adr <= rs1_2_adr;
-        rs2_3_adr <= rs2_2_adr;
-        rs1_4_adr <= rs1_3_adr;
-        rs2_4_adr <= rs2_3_adr;
+    //     rs1_1_adr <= INSTR_out_decode[19:15];
+    //     rs2_1_adr <= INSTR_out_decode[24:20];
+    //     rs1_2_adr <= rs1_1_adr;
+    //     rs2_2_adr <= rs2_1_adr;
+    //     rs1_3_adr <= rs1_2_adr;
+    //     rs2_3_adr <= rs2_2_adr;
+    //     rs1_4_adr <= rs1_3_adr;
+    //     rs2_4_adr <= rs2_3_adr;
         
-        rs1_1_data <= dataR1_out;
-        rs2_1_data <= dataR2_out;
-        rs1_2_data <= rs1_1_data;
-        rs2_2_data <= rs2_1_data;
-        rs1_3_data <= rs1_2_data;
-        rs2_3_data <= rs2_2_data;
-        rs1_4_data <= rs1_3_data;
-        rs2_4_data <= rs2_3_data;
+    //     rs1_1_data <= dataR1_out;
+    //     rs2_1_data <= dataR2_out;
+    //     rs1_2_data <= rs1_1_data;
+    //     rs2_2_data <= rs2_1_data;
+    //     rs1_3_data <= rs1_2_data;
+    //     rs2_3_data <= rs2_2_data;
+    //     rs1_4_data <= rs1_3_data;
+    //     rs2_4_data <= rs2_3_data;
         
-        rd_adr_1 <= INSTR_out_writeback[11:7];
-        rd_adr_2 <= rd_adr_1;
-        rd_adr_3 <= rd_adr_2;
+    //     rd_adr_1 <= INSTR_out_writeback[11:7];
+    //     rd_adr_2 <= rd_adr_1;
+    //     rd_adr_3 <= rd_adr_2;
         
-        wdata1 <= dmem_mux_out;
+    //     wdata1 <= dmem_mux_out;
         
-        pc_curr_1 <= pc_mux_out;
-        pc_curr_2 <= pc_curr_1;
-        pc_curr_3 <= pc_curr_2;
-        pc_curr_4 <= pc_curr_3;
-        pc_curr_5 <= pc_curr_4;
-        pc_curr_6 <= pc_curr_5;
+    //     pc_curr_1 <= pc_mux_out;
+    //     pc_curr_2 <= pc_curr_1;
+    //     pc_curr_3 <= pc_curr_2;
+    //     pc_curr_4 <= pc_curr_3;
+    //     pc_curr_5 <= pc_curr_4;
+    //     pc_curr_6 <= pc_curr_5;
         
         
-        pc_next_1 <= pc_out;
-        pc_next_2 <= pc_next_1;
-        pc_next_3 <= pc_next_2;
-        pc_next_4 <= pc_next_3;
-    end
+    //     pc_next_1 <= pc_out;
+    //     pc_next_2 <= pc_next_1;
+    //     pc_next_3 <= pc_next_2;
+    //     pc_next_4 <= pc_next_3;
+    // end
        
-    tracer tracer_ip (
-        .clk_i(clk),
-        .rst_ni(rst),
-        .hart_id_i(32'b0),
-        .rvfi_valid(1'b1),
+    // tracer tracer_ip (
+    //     .clk_i(clk),
+    //     .rst_ni(rst),
+    //     .hart_id_i(32'b0),
+    //     .rvfi_valid(1'b1),
         
-        .rvfi_insn_t(instruction5),
-        .rvfi_rs1_addr_t(rs1_4_adr),
-        .rvfi_rs2_addr_t(rs1_4_adr),
-        .rvfi_rs1_rdata_t(rs1_4_data),
-        .rvfi_rs2_rdata_t(rs2_4_data),
-        .rvfi_rd_addr_t(rd_adr_1) ,
+    //     .rvfi_insn_t(instruction5),
+    //     .rvfi_rs1_addr_t(rs1_4_adr),
+    //     .rvfi_rs2_addr_t(rs1_4_adr),
+    //     .rvfi_rs1_rdata_t(rs1_4_data),
+    //     .rvfi_rs2_rdata_t(rs2_4_data),
+    //     .rvfi_rd_addr_t(rd_adr_1) ,
         
-        .rvfi_rd_wdata_t(wdata),
+    //     .rvfi_rd_wdata_t(wdata),
         
-        .rvfi_pc_rdata_t(pc_curr_6),
-        .rvfi_pc_wdata_t(pc_next_4),
+    //     .rvfi_pc_rdata_t(pc_curr_6),
+    //     .rvfi_pc_wdata_t(pc_next_4),
         
-        .rvfi_mem_addr(0),
-        .rvfi_mem_rmask(0),
-        .rvfi_mem_wmask(0),
-        .rvfi_mem_rdata(0),
-        .rvfi_mem_wdata(0)
-    );
+    //     .rvfi_mem_addr(0),
+    //     .rvfi_mem_rmask(0),
+    //     .rvfi_mem_wmask(0),
+    //     .rvfi_mem_rdata(0),
+    //     .rvfi_mem_wdata(0)
+    // );
 
 endmodule
 
